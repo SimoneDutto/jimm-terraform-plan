@@ -1,0 +1,33 @@
+name: Terraform Lint and Validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  terraform:
+    name: Terraform Fmt and Validate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [demo]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14 
+
+      - name: Initialize Terraform
+        working-directory: ./environments/${{ matrix.environment }}
+        run: terraform init -backend=false
+
+      - name: Terraform Format Check
+        working-directory: ./environments/${{ matrix.environment }}
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        working-directory: ./environments/${{ matrix.environment }}
+        run: terraform validate
