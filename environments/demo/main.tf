@@ -58,7 +58,7 @@ module "jaas" {
   oauth_client_secret          = data.vault_generic_secret.jimm_oauth_cidp.data["client_secret"]
   oauth_authorization_endpoint = "https://login.canonical.com/oauth2/auth"
   oauth_scope                  = "openid email profile offline_access"
-  oauth_issuer_url             = "https://login.canonical.com/k8s-prod-is-cidp-2-iam-2-hydra"
+  oauth_issuer_url             = "https://login.canonical.com"
   oauth_jwks_endpoint          = "https://login.canonical.com/.well-known/jwks.json"
   oauth_jwt_access_token       = true
   oauth_token_endpoint         = "https://login.canonical.com/oauth2/token"
