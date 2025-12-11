@@ -1,0 +1,50 @@
+name: Deploy Demo Environment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Ensure only one deploy runs at a time
+concurrency:
+  group: deploy-demo
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [ self-hosted, self-hosted-linux-amd64-noble-private-endpoint-medium ]
+    env:
+      # See https://developer.hashicorp.com/terraform/cli/config/environment-variables
+      TF_IN_AUTOMATION: "true"
+      TF_INPUT: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14 
+
+      - name: Load credentials from Vault
+        uses: hashicorp/vault-action@v3
+        with:
+          url: https://vault.admin.canonical.com:8200
+          method: approle
+          roleId: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_APPROLE_SECRET_ID }}
+          secrets: |
+            secret/prodstack7/roles/k8s-dev-jaas-ps7-jaas/s3 access_key | AWS_ACCESS_KEY_ID ;
+            secret/prodstack7/roles/k8s-dev-jaas-ps7-jaas/s3 secret_key | AWS_SECRET_ACCESS_KEY ;
+
+      - name: Terraform Init
+        working-directory: environments/demo
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: environments/demo
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_approle_role_id: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
+          TF_VAR_approle_secret_id: ${{ secrets.VAULT_APPROLE_SECRET_ID }}

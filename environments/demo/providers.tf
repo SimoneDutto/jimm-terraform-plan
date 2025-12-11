@@ -18,12 +18,12 @@ data "vault_generic_secret" "juju_controller_certificate" {
   path = "secret/prodstack7/juju/common/ca_certs/juju-controller-36-cloud-infrastructure-ps7"
 }
 
-data "dns_srv_record_set" "controller" {
-  service = "_juju-controller-36-cloud-infrastructure-ps7._tcp.dynamic.admin.canonical.com."
+data "vault_generic_secret" "juju_controller_addresses" {
+  path = "secret/prodstack7/juju/common/controllers/juju-controller-36-cloud-infrastructure-ps7"
 }
 
 provider "juju" {
-  controller_addresses = "${data.dns_srv_record_set.controller.srv.0.target}:${data.dns_srv_record_set.controller.srv.0.port}"
+  controller_addresses = join(",", formatlist("%s:17070", split(",", data.vault_generic_secret.juju_controller_addresses.data["addresses"])))
   ca_certificate       = data.vault_generic_secret.juju_controller_certificate.data["ca_cert"]
   username             = data.vault_generic_secret.juju_credentials.data["username"]
   password             = data.vault_generic_secret.juju_credentials.data["password"]
