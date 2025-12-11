@@ -22,7 +22,7 @@ resource "juju_application" "vault" {
   charm {
     name    = "vault-k8s"
     channel = var.vault_channel
-    base    = "ubuntu@22.04"
+    base    = var.vault_base
   }
 }
 

@@ -35,7 +35,6 @@ module "jaas" {
   # JIMM Charm
   jimm_channel  = "3/edge"
   jimm_units    = 1
-  jimm_name     = "jimm"
   jimm_base     = "ubuntu@22.04"
   jimm_revision = 94
 

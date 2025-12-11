@@ -4,13 +4,6 @@ variable "model_uuid" {
   type        = string
 }
 
-# JIMM configuration
-variable "jimm_name" {
-  description = "Name of the JIMM application"
-  type        = string
-  default     = "jimm"
-}
-
 variable "jimm_units" {
   description = "Number of JIMM units"
   type        = number
@@ -80,6 +73,12 @@ variable "vault_channel" {
   description = "Charm channel for Vault"
   type        = string
   default     = "1.18/stable"
+}
+
+variable "vault_base" {
+  description = "Charm base for Vault"
+  type        = string
+  default     = "ubuntu@24.04"
 }
 
 # OAuth configuration

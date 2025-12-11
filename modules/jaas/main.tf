@@ -2,12 +2,14 @@
 
 # JIMM - deployed using the canonical/jimm-k8s-operator terraform module
 module "jimm" {
-  source = "git::https://github.com/canonical/jimm-k8s-operator.git//terraform?ref=4dbf3c7daac42f1e2e165b94c57a3a5d5ba5d61a"
+  source = "git::https://github.com/canonical/jimm-k8s-operator.git//terraform?ref=47b39c5636af3d4542a523dfc9d272d15fde7458"
 
   model_uuid = var.model_uuid
 
+  name = "jimm"
+
   jimm_charm = {
-    name     = var.jimm_name
+    name     = "juju-jimm-k8s"
     channel  = var.jimm_channel
     base     = var.jimm_base
     revision = var.jimm_revision
@@ -21,8 +23,6 @@ module "jimm" {
     dns_name          = var.dns_name
     public_key        = var.jimm_public_key
     private_key       = var.jimm_private_key
-
-
   }
 
   postgresql = {
