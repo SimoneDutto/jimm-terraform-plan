@@ -56,14 +56,14 @@ module "jaas" {
   # OAuth configuration
   oauth_client_id              = data.vault_generic_secret.jimm_oauth_cidp.data["client_id"]
   oauth_client_secret          = data.vault_generic_secret.jimm_oauth_cidp.data["client_secret"]
-  oauth_authorization_endpoint = "https://login.canonical.com/oauth2/auth"
+  oauth_authorization_endpoint = "https://login.staging.canonical.com/oauth2/auth"
   oauth_scope                  = "openid email profile offline_access"
-  oauth_issuer_url             = "https://login.canonical.com"
-  oauth_jwks_endpoint          = "https://login.canonical.com/.well-known/jwks.json"
+  oauth_issuer_url             = "https://login.staging.canonical.com"
+  oauth_jwks_endpoint          = "https://login.staging.canonical.com/.well-known/jwks.json"
   oauth_jwt_access_token       = true
-  oauth_token_endpoint         = "https://login.canonical.com/oauth2/token"
-  oauth_userinfo_endpoint      = "https://login.canonical.com/userinfo"
-  oauth_introspection_endpoint = "https://login.canonical.com/admin/oauth2/introspect" # not a real URL
+  oauth_token_endpoint         = "https://login.staging.canonical.com/oauth2/token"
+  oauth_userinfo_endpoint      = "https://login.staging.canonical.com/userinfo"
+  oauth_introspection_endpoint = "https://login.staging.canonical.com/admin/oauth2/introspect" # not a real URL
 
   # External offers
   postgresql_offer_url = local.database_offer_url
